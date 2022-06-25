@@ -1,7 +1,7 @@
 package com.example.WeddingPlanner.registration;
 
 import com.example.WeddingPlanner.appuser.AppUser;
-import com.example.WeddingPlanner.appuser.AppUserRole;
+import com.example.WeddingPlanner.appuser.AppUserRepository;
 import com.example.WeddingPlanner.appuser.AppUserService;
 import com.example.WeddingPlanner.email.EmailSender;
 import com.example.WeddingPlanner.registration.token.ConfirmationToken;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RegistrationService {
@@ -18,12 +19,15 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+    private final AppUserRepository appUserRepository;
 
-    public RegistrationService(AppUserService appUserService, EmailValidator emailValidator, ConfirmationTokenService confirmationTokenService, EmailSender emailSender) {
+    public RegistrationService(AppUserService appUserService, EmailValidator emailValidator, ConfirmationTokenService confirmationTokenService, EmailSender emailSender
+    ,AppUserRepository appUserRepository) {
         this.appUserService = appUserService;
         this.emailValidator = emailValidator;
         this.confirmationTokenService = confirmationTokenService;
         this.emailSender = emailSender;
+        this.appUserRepository = appUserRepository;
     }
 
     public String register(RegistrationRequest request) {
@@ -41,6 +45,7 @@ public class RegistrationService {
                             request.getEmail(),
                             request.getPassword(),
                             request.getLocation(),
+                            request.getVendorData(),
                             request.getAppUserRole()
                     )
             );
@@ -74,6 +79,18 @@ public class RegistrationService {
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getUsername());
         return "confirmed";
+    }
+
+    public AppUser findAppUserById(Integer id) {
+        return appUserRepository.findAppUserById(id).orElseThrow();
+    }
+
+    public AppUser updateUser(AppUser appUser){
+        return appUserRepository.save(appUser);
+    }
+
+    public List<AppUser> findAllUsers() {
+        return appUserRepository.findAll();
     }
 
     private String buildEmail(String name, String link) {

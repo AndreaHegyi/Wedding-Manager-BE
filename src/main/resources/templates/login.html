@@ -12,14 +12,25 @@
     <div style="background-color:#337ab7; height:50px;"></div>
     <div class="container-fluid">
         <div class="row col-lg-4 col-lg-offset-4" style="margin-top: 80px; background-color: #fff; padding: 20px; border: solid">
-            <form th:action="@{/login}" method="POST" class="form-signin">
-                <h3 class="form-signin-heading" th:text="Login"></h3>
-                <br /> <input type="text" id="email" name="email" th:placeholder="Email" required class="form-control" /> <br />
-                <br /> <input type="password" id="password" name="password" th:placeholder="Password" required class="form-control" /> <br />
-                <div align="center" th:if="${param.error}">
-                    <p style="font-size: 20px; color: #FF1C19;">Email or password is invalid.</p>
-                </div>
-                <button class="btn btn-lg btn-primary" name="Submit" value="Login" type="submit" th:text="Login">Login</button>
+            <form #loginForm="ngForm" (ngSubmit)="doLogin(loginForm)">
+                <fieldset>
+                    <h1>Login</h1>
+
+                    <p class="text-muted">Sign In to your account</p>
+                    <div class="input-group mb-4">
+                        <span class="input-group-addon"><i style="padding-top: 10px;padding-right: 10px" class="fa fa-user"></i></span>
+                        <input type="text" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-addon"><i style="padding-top: 10px;padding-right: 10px" class="fa fa-lock"></i></span>
+                        <input type="password" ngModel name="password" class="form-control" id="password" placeholder="Password" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="submit" style="background-color: green; border-color: green" class="btn btn-primary px-4">Login</button>
+                        </div>
+                    </div>
+                </fieldset>
             </form>
         </div>
     </div>

@@ -1,6 +1,6 @@
 package com.example.WeddingPlanner.registration;
 
-import com.example.WeddingPlanner.appuser.AppUserRole;
+import com.example.WeddingPlanner.vendordata.VendorData;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,14 +14,16 @@ public class RegistrationRequest {
     private final String email;
     private final String password;
     private final String location;
-    private final AppUserRole appUserRole;
+    private final VendorData vendorData;
+    private final String appUserRole;
 
-    public RegistrationRequest(String firstName, String lastName, String email, String password, String location, AppUserRole appUserRole) {
+    public RegistrationRequest(String firstName, String lastName, String email, String password, String location, VendorData vendorData, String appUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.location = location;
+        this.vendorData = vendorData;
         this.appUserRole = appUserRole;
     }
 
@@ -45,7 +47,11 @@ public class RegistrationRequest {
         return location;
     }
 
-    public AppUserRole getAppUserRole() {
+    public VendorData getVendorData(){
+        return vendorData;
+    }
+
+    public String getAppUserRole() {
         return appUserRole;
     }
 }

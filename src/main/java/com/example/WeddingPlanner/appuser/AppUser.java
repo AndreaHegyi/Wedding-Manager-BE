@@ -1,8 +1,9 @@
 package com.example.WeddingPlanner.appuser;
 
-import lombok.EqualsAndHashCode;
+import com.example.WeddingPlanner.vendordata.VendorData;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,6 @@ import java.util.Collections;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @Entity
 public class AppUser implements UserDetails {
 
@@ -22,7 +22,7 @@ public class AppUser implements UserDetails {
             strategy = GenerationType.IDENTITY,
             generator = "user_sequence"
     )
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, length = 20)
     private String firstName;
@@ -39,9 +39,12 @@ public class AppUser implements UserDetails {
     @Column(nullable = false, length = 20)
     private String location;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @Nullable
+    private VendorData vendorData;
+
     @Column(nullable = false)
-    private AppUserRole appUserRole;
+    private String appUserRole;
     private Boolean locked = false;
     private Boolean enabled = true;
 
@@ -50,12 +53,14 @@ public class AppUser implements UserDetails {
                    String email,
                    String password,
                    String location,
-                   AppUserRole appUserRole) {
+                   VendorData vendorData,
+                   String appUserRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.location = location;
+        this.vendorData = vendorData;
         this.appUserRole = appUserRole;
     }
 
@@ -66,7 +71,7 @@ public class AppUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(appUserRole.name());
+                new SimpleGrantedAuthority("VENDOR");
         return Collections.singletonList(authority);
     }
 

@@ -11,9 +11,11 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface AppUserRepository
-        extends JpaRepository<AppUser, Long> {
+        extends JpaRepository<AppUser, Integer> {
 
     Optional<AppUser> findByEmail(String email);
+
+    Optional<AppUser> findAppUserById(Integer Id);
 
     @Transactional
     @Modifying

@@ -24,11 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/registration/**")
+                .antMatchers("/api/v1/registration/**", "/VendorData/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
-                .formLogin().loginPage("/login").usernameParameter("email").permitAll()
+                .formLogin().loginPage("http://localhost:4200/login").usernameParameter("email").permitAll()
                 .defaultSuccessUrl("http://localhost:4200/vendorint", true);
     }
 
